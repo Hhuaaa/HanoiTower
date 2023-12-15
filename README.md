@@ -1,2 +1,2 @@
-# Hanoi Tower
+# HanoiTower
 ECE 287 Project Design
