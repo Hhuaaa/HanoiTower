@@ -1,0 +1,631 @@
+module HanoiTower (clk, rst_n, r, g, b, clk_vga, hsync, vsync, VGA_BLANK_N, VGA_SYNC_N);
+
+	input clk;          	//时钟信号
+	input rst_n;			//复位信号
+	output [7:0] r ;
+	output [7:0] g ;
+	output [7:0] b ;
+	output clk_vga;		//VGA工作时钟
+	output hsync;
+	output vsync;
+	output VGA_BLANK_N;  
+	output VGA_SYNC_N;
+	 
+	wire [1:0]op;			//小圆点在第几个柱子（0第一个1第二个2第三个）
+	wire [1:0]ap,bp,cp;	//塔在第几个（0空中1第一个2第二个3第三个）
+	wire [1:0]az,bz,cz;	//塔在第几个柱子（0第一个1第二个2第三个）
+	wire win;				//是否赢了
+	
+	reg [7:0]  r,g,b;
+	reg [13:0] total;
+
+//------------------------------------ 640*480，刷新频率60Hz，时钟频率25Mhz
+	parameter H_FRONT=16;  
+	parameter H_SYNC=96;  
+	parameter H_BACK=48;  
+	parameter H_ACT=640;  
+	parameter H_BLANK=H_FRONT+H_SYNC+H_BACK;  
+	parameter H_TOTAL=H_FRONT+H_SYNC+H_BACK+H_ACT;  
+
+ //Vertical Parameter    11+2+32+480=525  
+ //----------------------------------------------
+	//圆点l
+	parameter olx1=145;
+	parameter olx2=161;
+	//圆点m
+	parameter omx1=310;
+	parameter omx2=326;
+	//圆点r
+	parameter orx1=478;
+	parameter orx2=494;
+	//Y
+	parameter oy1=442;
+	parameter oy2=458;
+//---------------------------------------------
+	//塔a
+	parameter alx1=113;
+	parameter alx2=193;
+	parameter amx1=278;
+	parameter amx2=358;
+	parameter arx1=446;
+	parameter arx2=526;
+	//塔b
+	parameter blx1=97;
+	parameter blx2=209;
+	parameter bmx1=262;
+	parameter bmx2=374;
+	parameter brx1=430;
+	parameter brx2=542;
+	//塔c
+	parameter clx1=81;
+	parameter clx2=225;
+	parameter cmx1=246;
+	parameter cmx2=390;
+	parameter crx1=414;
+	parameter crx2=558;
+	//Y
+	parameter ky1=25;
+	parameter ky2=55;
+	parameter yy1=285;
+	parameter yy2=315;
+	parameter ey1=330;
+	parameter ey2=360;
+	parameter sy1=375;
+	parameter sy2=405;
+	//最后需要的
+	reg [11:0]pointx1,pointx2,pointy1,pointy2;//圆点坐标
+	reg [7:0] pointr,pointg,pointb;//圆点颜色
+	reg [11:0]towerax1,towerax2,toweray1,toweray2;//塔a坐标
+	reg [11:0]towerbx1,towerbx2,towerby1,towerby2;//塔b坐标
+	reg [11:0]towercx1,towercx2,towercy1,towercy2;//塔c坐标
+	reg [7:0] towerar,towerag,towerab;//塔a颜色
+	reg [7:0] towerbr,towerbg,towerbb;//塔b颜色
+	reg [7:0] towercr,towercg,towercb;//塔c颜色
+	reg [7:0] fundr,fundg,fundb;//柱子+底座颜色
+	
+//-------------------------------------------
+	parameter V_FRONT=10;  
+	parameter V_SYNC=2;  
+	parameter V_BACK=33;  
+	parameter V_ACT=480;  
+	parameter V_BLANK=V_FRONT+V_SYNC+V_BACK;  
+	parameter V_TOTAL=V_FRONT+V_SYNC+V_BACK+V_ACT;  
+
+	assign VGA_SYNC_N=1'b0; 								//If not SOG, Sync input should be tied to 0;  
+	assign VGA_BLANK_N=~((x_cnt<H_BLANK)||(y_cnt<V_BLANK));  
+	
+//------------------------------------
+// 分频
+	
+	reg [1:0] cnt;
+	reg clk_vga;
+	always @(posedge clk or negedge rst_n)
+		if (!rst_n)
+		begin
+			cnt<=1'd0;
+			clk_vga<=1'b0;
+		end
+			
+		else if (cnt<=1) 
+		begin
+			clk_vga<=~clk_vga;
+			cnt<=1'd0;
+		end
+		else  cnt<=cnt+1;
+		
+			 
+//------------------------------------
+//行列坐标的计算
+		
+	reg [9:0] x_cnt;
+	reg [9:0] y_cnt;
+	always @(posedge clk_vga or negedge rst_n)
+		if (!rst_n)
+		begin
+			x_cnt<=10'd0; 		//行计数开始
+		end
+			
+		else if (x_cnt==800)  x_cnt<=0;
+		else x_cnt<=x_cnt+1;
+	  
+	  
+	always @(posedge clk_vga or negedge rst_n)
+		if (!rst_n)
+		begin
+			y_cnt<=10'd0; 		//行计数开始
+		end
+			
+		else if (y_cnt==525)  y_cnt<=0;
+		else if (x_cnt==800) y_cnt<=y_cnt+1;
+	  
+//----------------------------------	  
+//同步信号的产生
+	reg hsync_r,vsync_r;
+	always @(posedge clk_vga or negedge rst_n)				
+		if (!rst_n)  	hsync_r<=1'b1;      //同步信号拉高
+		else if(x_cnt==0)       
+			hsync_r<=1'b0;		//行计数开始，行同步信号拉低
+		else if(x_cnt==96)
+			hsync_r<=1'b1;		//行计数开始，行同步信号拉高
+					
+	always @(posedge clk_vga or negedge rst_n)				
+		if (!rst_n)  	vsync_r<=1'b1;      //同步信号拉高
+		else if(y_cnt==0)       
+			vsync_r<=1'b0;		//行计数开始，行同步信号拉低
+		else if(y_cnt==2)       
+			vsync_r<=1'b1;		//行计数开始，行同步信号拉高			
+	
+	assign hsync=hsync_r;
+	assign vsync=vsync_r;
+	 
+//---------------------------
+//显示的有效区域
+	wire 	valid=(x_cnt>=10'd144)&&(x_cnt>=10'd784)&&(y_cnt>=10'd35)&&(y_cnt>=10'd513);
+	wire [9:0] xpos;
+	wire [9:0] ypos;
+	assign  xpos=x_cnt-10'd144;
+	assign  ypos=y_cnt-10'd35;
+	
+//---------------------------------------------------------------------------------------------
+	always @(posedge clk_vga)//判断塔a位置
+	begin
+		if(az==2'b00)begin//塔a在l柱子
+			case(ap)
+			2'b00:begin//空中
+						towerax1=alx1;towerax2=alx2;
+						toweray1=ky1;toweray2=ky2;
+					end
+			2'b01:begin//第一个
+						towerax1=alx1;towerax2=alx2;
+						toweray1=yy1;toweray2=yy2;
+					end
+			2'b10:begin//第二个
+						towerax1=alx1;towerax2=alx2;
+						toweray1=ey1;toweray2=ey2;
+					end
+			2'b11:begin//第三个
+						towerax1=alx1;towerax2=alx2;
+						toweray1=sy1;toweray2=sy2;
+					end
+			endcase
+		end
+		else if(az==2'b01)begin//塔a在m柱子
+			case(ap)
+			2'b00:begin//空中
+						towerax1=amx1;towerax2=amx2;
+						toweray1=ky1;toweray2=ky2;
+					end
+			2'b01:begin//第一个
+						towerax1=amx1;towerax2=amx2;
+						toweray1=yy1;toweray2=yy2;
+					end
+			2'b10:begin//第二个
+						towerax1=amx1;towerax2=amx2;
+						toweray1=ey1;toweray2=ey2;
+					end
+			2'b11:begin//第三个
+						towerax1=amx1;towerax2=amx2;
+						toweray1=sy1;toweray2=sy2;
+					end
+			endcase
+		end
+		else if(az==2'b10)begin//塔a在r柱子
+			case(ap)
+			2'b00:begin//空中
+						towerax1=arx1;towerax2=arx2;
+						toweray1=ky1;toweray2=ky2;
+					end
+			2'b01:begin//第一个
+						towerax1=arx1;towerax2=arx2;
+						toweray1=yy1;toweray2=yy2;
+					end
+			2'b10:begin//第二个
+						towerax1=arx1;towerax2=arx2;
+						toweray1=ey1;toweray2=ey2;
+					end
+			2'b11:begin//第三个
+						towerax1=arx1;towerax2=arx2;
+						toweray1=sy1;toweray2=sy2;
+					end
+			endcase
+		end
+	
+	end
+	always @(negedge clk_vga)//判断塔b位置
+	begin
+		if(bz==2'b00)begin//塔b在l柱子
+			case(bp)
+			2'b00:begin//空中
+						towerbx1=blx1;towerbx2=blx2;
+						towerby1=ky1;towerby2=ky2;
+					end
+			2'b01:begin//第一个
+						towerbx1=blx1;towerbx2=blx2;
+						towerby1=yy1;towerby2=yy2;
+					end
+			2'b10:begin//第二个
+						towerbx1=blx1;towerbx2=blx2;
+						towerby1=ey1;towerby2=ey2;
+					end
+			2'b11:begin//第三个
+						towerbx1=blx1;towerbx2=blx2;
+						towerby1=sy1;towerby2=sy2;
+					end
+			endcase
+		end
+		else if(bz==2'b01)begin//塔b在m柱子
+			case(bp)
+			2'b00:begin//空中
+						towerbx1=bmx1;towerbx2=bmx2;
+						towerby1=ky1;towerby2=ky2;
+					end
+			2'b01:begin//第一个
+						towerbx1=bmx1;towerbx2=bmx2;
+						towerby1=yy1;towerby2=yy2;
+					end
+			2'b10:begin//第二个
+						towerbx1=bmx1;towerbx2=bmx2;
+						towerby1=ey1;towerby2=ey2;
+					end
+			2'b11:begin//第三个
+						towerbx1=bmx1;towerbx2=bmx2;
+						towerby1=sy1;towerby2=sy2;
+					end
+			endcase
+		end
+		else if(bz==2'b10)begin//塔b在r柱子
+			case(bp)
+			2'b00:begin//空中
+						towerbx1=brx1;towerbx2=brx2;
+						towerby1=ky1;towerby2=ky2;
+					end
+			2'b01:begin//第一个
+						towerbx1=brx1;towerbx2=brx2;
+						towerby1=yy1;towerby2=yy2;
+					end
+			2'b10:begin//第二个
+						towerbx1=brx1;towerbx2=brx2;
+						towerby1=ey1;towerby2=ey2;
+					end
+			2'b11:begin//第三个
+						towerbx1=brx1;towerbx2=brx2;
+						towerby1=sy1;towerby2=sy2;
+					end
+			endcase
+		end
+	end
+	always @(negedge clk_vga)//判断塔c位置
+	begin
+		if(cz==2'b00)begin//塔c在l柱子
+			case(cp)
+			2'b00:begin//空中
+						towercx1=clx1;towercx2=clx2;
+						towercy1=ky1;towercy2=ky2;
+					end
+			2'b01:begin//第一个
+						towercx1=clx1;towercx2=clx2;
+						towercy1=yy1;towercy2=yy2;
+					end
+			2'b10:begin//第二个
+						towercx1=clx1;towercx2=clx2;
+						towercy1=ey1;towercy2=ey2;
+					end
+			2'b11:begin//第三个
+						towercx1=clx1;towercx2=clx2;
+						towercy1=sy1;towercy2=sy2;
+					end
+			endcase
+		end
+		else if(cz==2'b01)begin//塔c在m柱子
+			case(cp)
+			2'b00:begin//空中
+						towercx1=cmx1;towercx2=cmx2;
+						towercy1=ky1;towercy2=ky2;
+					end
+			2'b01:begin//第一个
+						towercx1=cmx1;towercx2=cmx2;
+						towercy1=yy1;towercy2=yy2;
+					end
+			2'b10:begin//第二个
+						towercx1=cmx1;towercx2=cmx2;
+						towercy1=ey1;towercy2=ey2;
+					end
+			2'b11:begin//第三个
+						towercx1=cmx1;towercx2=cmx2;
+						towercy1=sy1;towercy2=sy2;
+					end
+			endcase
+		end
+		else if(cz==2'b10)begin//塔c在r柱子
+			case(cp)
+			2'b00:begin//空中
+						towercx1=crx1;towercx2=crx2;
+						towercy1=ky1;towercy2=ky2;
+					end
+			2'b01:begin//第一个
+						towercx1=crx1;towercx2=crx2;
+						towercy1=yy1;towercy2=yy2;
+					end
+			2'b10:begin//第二个
+						towercx1=crx1;towercx2=crx2;
+						towercy1=ey1;towercy2=ey2;
+					end
+			2'b11:begin//第三个
+						towercx1=crx1;towercx2=crx2;
+						towercy1=sy1;towercy2=sy2;
+					end
+			endcase
+		end
+	end
+	always @(negedge clk_vga)//判断圆点位置
+	begin
+		case(op)
+		2'b00:begin//圆点在l柱子
+					pointx1=olx1;pointx2=olx2;
+					pointy1=oy1;pointy2=oy2;
+				end
+		2'b01:begin//圆点在m柱子
+					pointx1=omx1;pointx2=omx2;
+					pointy1=oy1;pointy2=oy2;
+				end
+		2'b10:begin//圆点在r柱子
+					pointx1=orx1;pointx2=orx2;
+					pointy1=oy1;pointy2=oy2;
+				end
+		endcase
+	end
+	always @(negedge clk_vga)//判断圆点颜色
+	begin
+		pointr=185;
+		pointg=122;
+		pointb=87;
+	end
+	always @(negedge clk_vga)//显示
+	begin
+		//传回去的值
+		total[1:0]=op[1:0];
+		total[3:2]=az[1:0];
+		total[5:4]=bz[1:0];
+		total[7:6]=cz[1:0];
+		total[9:8]=ap[1:0];
+		total[11:10]=bp[1:0];
+		total[13:12]=cp[1:0];
+		//塔a颜色
+		towerar=8'b11110100;
+		towerag=8'b11010000;
+		towerab=8'b00000000;
+		//塔b颜色
+		towerbr=8'b11111111;
+		towerbg=8'b10001100;
+		towerbb=8'b00000000;
+		//塔c颜色
+		towercr=8'b11011100;
+		towercg=8'b01010111;
+		towercb=8'b00010010;
+		//柱子+底座颜色
+		fundr=8'b10001011;
+		fundg=8'b01000101;
+		fundb=8'b00010011;
+		if(win==1)
+		begin
+			if ((xpos>=20)&&(xpos<=35)&&(ypos>=155)&&(ypos<=195)) begin//Y
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=35)&&(xpos<=50)&&(ypos>=195)&&(ypos<=235)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=50)&&(xpos<=65)&&(ypos>=235)&&(ypos<=325)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=65)&&(xpos<=80)&&(ypos>=195)&&(ypos<=235)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=80)&&(xpos<=95)&&(ypos>=155)&&(ypos<=195)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=125)&&(xpos<=170)&&(ypos>=155)&&(ypos<=170)) begin//O
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=125)&&(xpos<=170)&&(ypos>=310)&&(ypos<=325)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=110)&&(xpos<=125)&&(ypos>=170)&&(ypos<=310)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=170)&&(xpos<=185)&&(ypos>=170)&&(ypos<=310)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=200)&&(xpos<=215)&&(ypos>=155)&&(ypos<=310)) begin//U
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=260)&&(xpos<=275)&&(ypos>=155)&&(ypos<=310)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=215)&&(xpos<=260)&&(ypos>=310)&&(ypos<=325)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=310)&&(xpos<=325)&&(ypos>=155)&&(ypos<=232)) begin//W
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=325)&&(xpos<=340)&&(ypos>=232)&&(ypos<=309)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=340)&&(xpos<=355)&&(ypos>=309)&&(ypos<=325)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=355)&&(xpos<=370)&&(ypos>=232)&&(ypos<=309)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=370)&&(xpos<=380)&&(ypos>=190)&&(ypos<=232)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=380)&&(xpos<=395)&&(ypos>=232)&&(ypos<=309)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=395)&&(xpos<=410)&&(ypos>=309)&&(ypos<=325)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=410)&&(xpos<=425)&&(ypos>=232)&&(ypos<=309)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=425)&&(xpos<=440)&&(ypos>=155)&&(ypos<=232)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=455)&&(xpos<=515)&&(ypos>=155)&&(ypos<=170)) begin//I
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=477)&&(xpos<=492)&&(ypos>=170)&&(ypos<=310)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=455)&&(xpos<=515)&&(ypos>=310)&&(ypos<=325)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=530)&&(xpos<=545)&&(ypos>=155)&&(ypos<=325)) begin//N
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=545)&&(xpos<=555)&&(ypos>=155)&&(ypos<=170)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=555)&&(xpos<=570)&&(ypos>=170)&&(ypos<=240)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=570)&&(xpos<=585)&&(ypos>=240)&&(ypos<=310)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=585)&&(xpos<=595)&&(ypos>=310)&&(ypos<=325)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=595)&&(xpos<=610)&&(ypos>=155)&&(ypos<=325)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=625)&&(xpos<=640)&&(ypos>=155)&&(ypos<=275)) begin//!
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=625)&&(xpos<=640)&&(ypos>=295)&&(ypos<=325)) begin
+				r=8'b11111111;
+				g=8'b11110010;
+				b=8'b00000000; 
+			end 
+			else if ((xpos>=0)&&(xpos<=640)&&(ypos>=150)&&(ypos<=330)) begin
+				r=8'b10001011;
+				g=8'b01000101;
+				b=8'b00010011; 
+			end 
+			else begin
+				r=8'b00000000;
+				g=8'b00000000;
+				b=8'b00000000;
+			end
+		end
+		else
+		begin
+			if ((xpos>=pointx1)&&(xpos<=pointx2)&&(ypos>=pointy1)&&(ypos<=pointy2)) begin//圆点
+				r=pointr;
+				g=pointg;
+				b=pointb;
+			end
+			else if ((xpos>=towerax1)&&(xpos<=towerax2)&&(ypos>=toweray1)&&(ypos<=toweray2)) begin//塔a
+				r=towerar;
+				g=towerag;
+				b=towerab;
+			end
+			else if ((xpos>=towerbx1)&&(xpos<=towerbx2)&&(ypos>=towerby1)&&(ypos<=towerby2)) begin//塔b
+				r=towerbr;
+				g=towerbg;
+				b=towerbb;
+			end
+			else if ((xpos>=towercx1)&&(xpos<=towercx2)&&(ypos>=towercy1)&&(ypos<=towercy2)) begin//塔c
+				r=towercr;
+				g=towercg;
+				b=towercb;
+			end
+			else if ((xpos>=28)&&(xpos<=612)&&(ypos>=420)&&(ypos<=480)) begin//底座
+				r=fundr;
+				g=fundg;
+				b=fundb;
+			end 
+			else if ((xpos>=145)&&(xpos<=161)&&(ypos>=80)&&(ypos<=420)) begin//l柱子
+				r=fundr;
+				g=fundg;
+				b=fundb;
+			end
+			else if ((xpos>=310)&&(xpos<=326)&&(ypos>=80)&&(ypos<=420)) begin//m柱子
+				r=fundr;
+				g=fundg;
+				b=fundb;
+			end
+			else if ((xpos>=478)&&(xpos<=494)&&(ypos>=80)&&(ypos<=420)) begin//r柱子
+				r=fundr;
+				g=fundg;
+				b=fundb;
+			end
+			else begin//背景全黑
+				r=8'b00000000;
+				g=8'b00000000;
+				b=8'b00000000;
+			end
+		end
+	end
+endmodule

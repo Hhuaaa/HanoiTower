@@ -1,0 +1,6 @@
+
+State Machine - |HanoiTower|controller:myController|inop
+Name inop.00 inop.10 inop.01 
+inop.00 0 0 0 
+inop.01 1 0 1 
+inop.10 1 1 0 

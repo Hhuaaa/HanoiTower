@@ -1,0 +1,578 @@
+Analysis & Synthesis report for HanoiTower
+Thu Dec 14 14:44:43 2023
+Quartus Prime Version 16.1.0 Build 196 10/24/2016 SJ Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. Registers Removed During Synthesis
+  9. General Register Statistics
+ 10. Inverted Register Statistics
+ 11. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 12. Parameter Settings for User Entity Instance: Top-level Entity: |HanoiTower
+ 13. Post-Synthesis Netlist Statistics for Top Partition
+ 14. Elapsed Time Per Partition
+ 15. Analysis & Synthesis Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2016  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel MegaCore Function License Agreement, or other 
+applicable license agreement, including, without limitation, 
+that your use is for the sole purpose of programming logic 
+devices manufactured by Intel and sold by Intel or its 
+authorized distributors.  Please refer to the applicable 
+agreement for further details.
+
+
+
++----------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                     ;
++------------------------------------+---------------------------------------------+
+; Analysis & Synthesis Status        ; Successful - Thu Dec 14 14:44:43 2023       ;
+; Quartus Prime Version              ; 16.1.0 Build 196 10/24/2016 SJ Lite Edition ;
+; Revision Name                      ; HanoiTower                                  ;
+; Top-level Entity Name              ; HanoiTower                                  ;
+; Family                             ; Cyclone IV E                                ;
+; Total logic elements               ; 625                                         ;
+;     Total combinational functions  ; 589                                         ;
+;     Dedicated logic registers      ; 132                                         ;
+; Total registers                    ; 132                                         ;
+; Total pins                         ; 36                                          ;
+; Total virtual pins                 ; 0                                           ;
+; Total memory bits                  ; 0                                           ;
+; Embedded Multiplier 9-bit elements ; 0                                           ;
+; Total PLLs                         ; 0                                           ;
++------------------------------------+---------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                        ;
++----------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                     ; Setting            ; Default Value      ;
++----------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                     ; EP4CE115F29C7      ;                    ;
+; Top-level entity name                                                      ; HanoiTower         ; HanoiTower         ;
+; Family name                                                                ; Cyclone IV E       ; Cyclone V          ;
+; Use smart compilation                                                      ; Off                ; Off                ;
+; Enable parallel Assembler and TimeQuest Timing Analyzer during compilation ; On                 ; On                 ;
+; Enable compact report table                                                ; Off                ; Off                ;
+; Restructure Multiplexers                                                   ; Auto               ; Auto               ;
+; Create Debugging Nodes for IP Cores                                        ; Off                ; Off                ;
+; Preserve fewer node names                                                  ; On                 ; On                 ;
+; OpenCore Plus hardware evaluation                                          ; Enable             ; Enable             ;
+; Verilog Version                                                            ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                               ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                   ; Auto               ; Auto               ;
+; Safe State Machine                                                         ; Off                ; Off                ;
+; Extract Verilog State Machines                                             ; On                 ; On                 ;
+; Extract VHDL State Machines                                                ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                          ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                                 ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                             ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                                    ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                                  ; On                 ; On                 ;
+; Parallel Synthesis                                                         ; On                 ; On                 ;
+; DSP Block Balancing                                                        ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                         ; On                 ; On                 ;
+; Power-Up Don't Care                                                        ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                               ; Off                ; Off                ;
+; Remove Duplicate Registers                                                 ; On                 ; On                 ;
+; Ignore CARRY Buffers                                                       ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                                     ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                                      ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                                  ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                       ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                        ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                             ; Off                ; Off                ;
+; Optimization Technique                                                     ; Balanced           ; Balanced           ;
+; Carry Chain Length                                                         ; 70                 ; 70                 ;
+; Auto Carry Chains                                                          ; On                 ; On                 ;
+; Auto Open-Drain Pins                                                       ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                      ; Off                ; Off                ;
+; Auto ROM Replacement                                                       ; On                 ; On                 ;
+; Auto RAM Replacement                                                       ; On                 ; On                 ;
+; Auto DSP Block Replacement                                                 ; On                 ; On                 ;
+; Auto Shift Register Replacement                                            ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                            ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                              ; On                 ; On                 ;
+; Strict RAM Replacement                                                     ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                          ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                     ; Off                ; Off                ;
+; Auto RAM Block Balancing                                                   ; On                 ; On                 ;
+; Auto RAM to Logic Cell Conversion                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                      ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                         ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                         ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                              ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing                        ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                          ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                    ; On                 ; On                 ;
+; Report Parameter Settings                                                  ; On                 ; On                 ;
+; Report Source Assignments                                                  ; On                 ; On                 ;
+; Report Connectivity Checks                                                 ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                         ; Off                ; Off                ;
+; Synchronization Register Chain Length                                      ; 2                  ; 2                  ;
+; PowerPlay Power Optimization During Synthesis                              ; Normal compilation ; Normal compilation ;
+; HDL message level                                                          ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                            ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report                   ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report                         ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                  ; 100                ; 100                ;
+; Clock MUX Protection                                                       ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                ; Off                ; Off                ;
+; Block Design Naming                                                        ; Auto               ; Auto               ;
+; SDC constraint protection                                                  ; Off                ; Off                ;
+; Synthesis Effort                                                           ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal               ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                                       ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                                         ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                     ; On                 ; On                 ;
++----------------------------------------------------------------------------+--------------------+--------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 8           ;
+; Maximum allowed            ; 4           ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 4           ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
+;     Processors 2-4         ;   0.0%      ;
++----------------------------+-------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                 ;
++----------------------------------+-----------------+------------------------+----------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type              ; File Name with Absolute Path                                   ; Library ;
++----------------------------------+-----------------+------------------------+----------------------------------------------------------------+---------+
+; HanoiTower.v                     ; yes             ; User Verilog HDL File  ; C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v ;         ;
+; controller.v                     ; yes             ; User Verilog HDL File  ; C:/Users/liuj169/Downloads/ECE 287 Project Design/controller.v ;         ;
++----------------------------------+-----------------+------------------------+----------------------------------------------------------------+---------+
+
+
++------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                ;
++---------------------------------------------+--------------+
+; Resource                                    ; Usage        ;
++---------------------------------------------+--------------+
+; Estimated Total logic elements              ; 625          ;
+;                                             ;              ;
+; Total combinational functions               ; 589          ;
+; Logic element usage by number of LUT inputs ;              ;
+;     -- 4 input functions                    ; 372          ;
+;     -- 3 input functions                    ; 91           ;
+;     -- <=2 input functions                  ; 126          ;
+;                                             ;              ;
+; Logic elements by mode                      ;              ;
+;     -- normal mode                          ; 562          ;
+;     -- arithmetic mode                      ; 27           ;
+;                                             ;              ;
+; Total registers                             ; 132          ;
+;     -- Dedicated logic registers            ; 132          ;
+;     -- I/O registers                        ; 0            ;
+;                                             ;              ;
+; I/O pins                                    ; 36           ;
+;                                             ;              ;
+; Embedded Multiplier 9-bit elements          ; 0            ;
+;                                             ;              ;
+; Maximum fan-out node                        ; clk_vga~reg0 ;
+; Maximum fan-out                             ; 106          ;
+; Total fan-out                               ; 2399         ;
+; Average fan-out                             ; 3.03         ;
++---------------------------------------------+--------------+
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                        ;
++------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+-------------------------------------+-------------+--------------+
+; Compilation Hierarchy Node   ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name                 ; Entity Name ; Library Name ;
++------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+-------------------------------------+-------------+--------------+
+; |HanoiTower                  ; 589 (415)           ; 132 (105)                 ; 0           ; 0            ; 0       ; 0         ; 36   ; 0            ; |HanoiTower                         ; HanoiTower  ; work         ;
+;    |controller:myController| ; 174 (174)           ; 27 (27)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |HanoiTower|controller:myController ; controller  ; work         ;
++------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+-------------------------------------+-------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++---------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                    ;
++-----------------------------------------+---------------------------------------------+
+; Register name                           ; Reason for Removal                          ;
++-----------------------------------------+---------------------------------------------+
+; point_y1[7,8]                           ; Stuck at VCC due to stuck port data_in      ;
+; point_y1[6]                             ; Stuck at GND due to stuck port data_in      ;
+; point_y1[3..5]                          ; Stuck at VCC due to stuck port data_in      ;
+; point_y1[2]                             ; Stuck at GND due to stuck port data_in      ;
+; point_y1[1]                             ; Stuck at VCC due to stuck port data_in      ;
+; point_y1[0]                             ; Stuck at GND due to stuck port data_in      ;
+; point_y2[9..11]                         ; Stuck at GND due to stuck port data_in      ;
+; point_y2[6..8]                          ; Stuck at VCC due to stuck port data_in      ;
+; point_y2[4,5]                           ; Stuck at GND due to stuck port data_in      ;
+; point_y2[3]                             ; Stuck at VCC due to stuck port data_in      ;
+; point_y2[2]                             ; Stuck at GND due to stuck port data_in      ;
+; point_y2[1]                             ; Stuck at VCC due to stuck port data_in      ;
+; point_y2[0]                             ; Stuck at GND due to stuck port data_in      ;
+; point_x1[9..11]                         ; Stuck at GND due to stuck port data_in      ;
+; point_x1[4]                             ; Stuck at VCC due to stuck port data_in      ;
+; point_x2[4,9..11]                       ; Stuck at GND due to stuck port data_in      ;
+; point_y1[9..11]                         ; Stuck at GND due to stuck port data_in      ;
+; towerc_x1[9,11]                         ; Merged with towerc_x1[10]                   ;
+; towerc_x2[4,10,11]                      ; Merged with towerc_x1[10]                   ;
+; towerc_y1[7,9..11]                      ; Merged with towerc_x1[10]                   ;
+; towerc_y2[9..11]                        ; Merged with towerc_x1[10]                   ;
+; towerc_x1[8]                            ; Merged with towerc_x1[3]                    ;
+; towerc_x2[3,9]                          ; Merged with towerc_x1[3]                    ;
+; towerc_x1[2,7]                          ; Merged with towerc_x1[1]                    ;
+; towerc_x2[1,2]                          ; Merged with towerc_x1[1]                    ;
+; towerc_x2[7]                            ; Merged with towerc_x1[6]                    ;
+; towerc_x2[8]                            ; Merged with towerc_x1[5]                    ;
+; towerc_x2[0,6]                          ; Merged with towerc_x1[0]                    ;
+; towerc_y2[8]                            ; Merged with towerc_y1[8]                    ;
+; towerc_y1[2,6]                          ; Merged with towerc_y1[1]                    ;
+; towerc_y2[7]                            ; Merged with towerc_y1[5]                    ;
+; towerc_y1[4]                            ; Merged with towerc_y1[0]                    ;
+; towerc_y2[0,4]                          ; Merged with towerc_y1[0]                    ;
+; towerc_y2[5]                            ; Merged with towerc_y1[3]                    ;
+; towerb_x1[4,9,11]                       ; Merged with towerb_x1[10]                   ;
+; towerb_x2[10,11]                        ; Merged with towerb_x1[10]                   ;
+; towerb_y1[7,9..11]                      ; Merged with towerb_x1[10]                   ;
+; towerb_y2[9..11]                        ; Merged with towerb_x1[10]                   ;
+; towerb_x1[2,8]                          ; Merged with towerb_x1[1]                    ;
+; towerb_x2[1,2]                          ; Merged with towerb_x1[1]                    ;
+; towerb_x1[7]                            ; Merged with towerb_x1[3]                    ;
+; towerb_x2[3,9]                          ; Merged with towerb_x1[3]                    ;
+; towerb_x1[6]                            ; Merged with towerb_x1[0]                    ;
+; towerb_x2[0,7]                          ; Merged with towerb_x1[0]                    ;
+; towerb_x2[8]                            ; Merged with towerb_x2[5]                    ;
+; towerb_y2[8]                            ; Merged with towerb_y1[8]                    ;
+; towerb_y1[6]                            ; Merged with towerb_y1[1]                    ;
+; towerb_y2[7]                            ; Merged with towerb_y1[5]                    ;
+; towerb_y1[4]                            ; Merged with towerb_y1[0]                    ;
+; towerb_y2[0,4]                          ; Merged with towerb_y1[0]                    ;
+; towerb_y2[5]                            ; Merged with towerb_y1[3]                    ;
+; towera_x1[9,11]                         ; Merged with towera_x1[10]                   ;
+; towera_x2[4,10,11]                      ; Merged with towera_x1[10]                   ;
+; towera_y1[7,9..11]                      ; Merged with towera_x1[10]                   ;
+; towera_y2[9..11]                        ; Merged with towera_x1[10]                   ;
+; towera_x1[2,8]                          ; Merged with towera_x1[1]                    ;
+; towera_x2[1,2]                          ; Merged with towera_x1[1]                    ;
+; towera_x1[7]                            ; Merged with towera_x1[3]                    ;
+; towera_x2[3,9]                          ; Merged with towera_x1[3]                    ;
+; towera_x1[6]                            ; Merged with towera_x1[0]                    ;
+; towera_x2[0,7]                          ; Merged with towera_x1[0]                    ;
+; towera_x2[8]                            ; Merged with towera_x2[5]                    ;
+; towera_y2[8]                            ; Merged with towera_y1[8]                    ;
+; towera_y1[6]                            ; Merged with towera_y1[1]                    ;
+; towera_y2[7]                            ; Merged with towera_y1[5]                    ;
+; towera_y1[4]                            ; Merged with towera_y1[0]                    ;
+; towera_y2[0,4]                          ; Merged with towera_y1[0]                    ;
+; towera_y2[5]                            ; Merged with towera_y1[3]                    ;
+; point_x1[2,8]                           ; Merged with point_x1[1]                     ;
+; point_x2[1,2,6,8]                       ; Merged with point_x1[1]                     ;
+; point_x1[6]                             ; Merged with point_x1[3]                     ;
+; point_x2[3]                             ; Merged with point_x1[3]                     ;
+; controller:myController|cp[1]           ; Merged with controller:myController|cp[0]   ;
+; controller:myController|incp[1]         ; Merged with controller:myController|incp[0] ;
+; total[13]                               ; Merged with total[12]                       ;
+; point_x2[5,7]                           ; Merged with point_x1[7]                     ;
+; point_x2[0]                             ; Merged with point_x1[0]                     ;
+; towerc_x1[10]                           ; Stuck at GND due to stuck port data_in      ;
+; towerb_x1[10]                           ; Stuck at GND due to stuck port data_in      ;
+; towera_x1[10]                           ; Stuck at GND due to stuck port data_in      ;
+; towerc_y2[3,6]                          ; Stuck at GND due to stuck port data_in      ;
+; towerc_y1[0]                            ; Stuck at VCC due to stuck port data_in      ;
+; towerc_y2[2]                            ; Stuck at VCC due to stuck port data_in      ;
+; cnt[1]                                  ; Stuck at GND due to stuck port data_in      ;
+; cnt[0]                                  ; Lost fanout                                 ;
+; towerc_x1[4]                            ; Stuck at VCC due to stuck port data_in      ;
+; towerb_x2[4]                            ; Stuck at VCC due to stuck port data_in      ;
+; towera_x1[4]                            ; Stuck at VCC due to stuck port data_in      ;
+; towerc_y1[5,8]                          ; Merged with towerc_y1[1]                    ;
+; towerc_y2[1]                            ; Merged with towerc_y1[3]                    ;
+; Total Number of Removed Registers = 152 ;                                             ;
++-----------------------------------------+---------------------------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 132   ;
+; Number of registers using Synchronous Clear  ; 1     ;
+; Number of registers using Synchronous Load   ; 0     ;
+; Number of registers using Asynchronous Clear ; 23    ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 58    ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++--------------------------------------------------+
+; Inverted Register Statistics                     ;
++----------------------------------------+---------+
+; Inverted Register                      ; Fan out ;
++----------------------------------------+---------+
+; hsync_r                                ; 2       ;
+; vsync_r                                ; 2       ;
+; Total number of inverted registers = 2 ;         ;
++----------------------------------------+---------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                            ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                  ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------+
+; 3:1                ; 10 bits   ; 20 LEs        ; 10 LEs               ; 10 LEs                 ; Yes        ; |HanoiTower|y_cnt[3]                        ;
+; 4:1                ; 6 bits    ; 12 LEs        ; 12 LEs               ; 0 LEs                  ; Yes        ; |HanoiTower|towerc_x1[3]                    ;
+; 4:1                ; 6 bits    ; 12 LEs        ; 12 LEs               ; 0 LEs                  ; Yes        ; |HanoiTower|towerb_x1[5]                    ;
+; 4:1                ; 6 bits    ; 12 LEs        ; 12 LEs               ; 0 LEs                  ; Yes        ; |HanoiTower|towera_x1[1]                    ;
+; 4:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; Yes        ; |HanoiTower|point_x1[1]                     ;
+; 14:1               ; 2 bits    ; 18 LEs        ; 4 LEs                ; 14 LEs                 ; Yes        ; |HanoiTower|controller:myController|op[1]   ;
+; 14:1               ; 11 bits   ; 99 LEs        ; 11 LEs               ; 88 LEs                 ; Yes        ; |HanoiTower|controller:myController|bp[1]   ;
+; 17:1               ; 2 bits    ; 22 LEs        ; 12 LEs               ; 10 LEs                 ; Yes        ; |HanoiTower|controller:myController|inap[0] ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |HanoiTower|r                               ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; No         ; |HanoiTower|b                               ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |HanoiTower|r                               ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |HanoiTower|controller:myController|incp    ;
+; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |HanoiTower|controller:myController|inap    ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------+
+
+
++----------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: Top-level Entity: |HanoiTower ;
++----------------+-------+---------------------------------------------------+
+; Parameter Name ; Value ; Type                                              ;
++----------------+-------+---------------------------------------------------+
+; H_FRONT        ; 16    ; Signed Integer                                    ;
+; H_SYNC         ; 96    ; Signed Integer                                    ;
+; H_BACK         ; 48    ; Signed Integer                                    ;
+; H_ACT          ; 640   ; Signed Integer                                    ;
+; H_BLANK        ; 160   ; Signed Integer                                    ;
+; H_TOTAL        ; 800   ; Signed Integer                                    ;
+; ol_x1          ; 145   ; Signed Integer                                    ;
+; ol_x2          ; 161   ; Signed Integer                                    ;
+; om_x1          ; 310   ; Signed Integer                                    ;
+; om_x2          ; 326   ; Signed Integer                                    ;
+; or_x1          ; 478   ; Signed Integer                                    ;
+; or_x2          ; 494   ; Signed Integer                                    ;
+; o_y1           ; 442   ; Signed Integer                                    ;
+; o_y2           ; 458   ; Signed Integer                                    ;
+; al_x1          ; 113   ; Signed Integer                                    ;
+; al_x2          ; 193   ; Signed Integer                                    ;
+; am_x1          ; 278   ; Signed Integer                                    ;
+; am_x2          ; 358   ; Signed Integer                                    ;
+; ar_x1          ; 446   ; Signed Integer                                    ;
+; ar_x2          ; 526   ; Signed Integer                                    ;
+; bl_x1          ; 97    ; Signed Integer                                    ;
+; bl_x2          ; 209   ; Signed Integer                                    ;
+; bm_x1          ; 262   ; Signed Integer                                    ;
+; bm_x2          ; 374   ; Signed Integer                                    ;
+; br_x1          ; 430   ; Signed Integer                                    ;
+; br_x2          ; 542   ; Signed Integer                                    ;
+; cl_x1          ; 81    ; Signed Integer                                    ;
+; cl_x2          ; 225   ; Signed Integer                                    ;
+; cm_x1          ; 246   ; Signed Integer                                    ;
+; cm_x2          ; 390   ; Signed Integer                                    ;
+; cr_x1          ; 414   ; Signed Integer                                    ;
+; cr_x2          ; 558   ; Signed Integer                                    ;
+; k_y1           ; 25    ; Signed Integer                                    ;
+; k_y2           ; 55    ; Signed Integer                                    ;
+; y_y1           ; 285   ; Signed Integer                                    ;
+; y_y2           ; 315   ; Signed Integer                                    ;
+; e_y1           ; 330   ; Signed Integer                                    ;
+; e_y2           ; 360   ; Signed Integer                                    ;
+; s_y1           ; 375   ; Signed Integer                                    ;
+; s_y2           ; 405   ; Signed Integer                                    ;
+; V_FRONT        ; 10    ; Signed Integer                                    ;
+; V_SYNC         ; 2     ; Signed Integer                                    ;
+; V_BACK         ; 33    ; Signed Integer                                    ;
+; V_ACT          ; 480   ; Signed Integer                                    ;
+; V_BLANK        ; 45    ; Signed Integer                                    ;
+; V_TOTAL        ; 525   ; Signed Integer                                    ;
++----------------+-------+---------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; boundary_port         ; 36                          ;
+; cycloneiii_ff         ; 132                         ;
+;     CLR               ; 23                          ;
+;     ENA               ; 58                          ;
+;     SCLR              ; 1                           ;
+;     plain             ; 50                          ;
+; cycloneiii_lcell_comb ; 593                         ;
+;     arith             ; 27                          ;
+;         2 data inputs ; 27                          ;
+;     normal            ; 566                         ;
+;         0 data inputs ; 1                           ;
+;         1 data inputs ; 27                          ;
+;         2 data inputs ; 75                          ;
+;         3 data inputs ; 91                          ;
+;         4 data inputs ; 372                         ;
+;                       ;                             ;
+; Max LUT depth         ; 13.40                       ;
+; Average LUT depth     ; 6.66                        ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:02     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Analysis & Synthesis
+    Info: Version 16.1.0 Build 196 10/24/2016 SJ Lite Edition
+    Info: Processing started: Thu Dec 14 14:44:31 2023
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off HanoiTower -c HanoiTower
+Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
+Warning (10275): Verilog HDL Module Instantiation warning at HanoiTower.v(112): ignored dangling comma in List of Port Connections File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 112
+Info (12021): Found 1 design units, including 1 entities, in source file hanoitower.v
+    Info (12023): Found entity 1: HanoiTower File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file controller.v
+    Info (12023): Found entity 1: controller File: C:/Users/liuj169/Downloads/ECE 287 Project Design/controller.v Line: 1
+Warning (12019): Can't analyze file -- file output_files/key.v is missing
+Warning (12019): Can't analyze file -- file output_files/debounce.v is missing
+Info (12127): Elaborating entity "HanoiTower" for the top level hierarchy
+Warning (10036): Verilog HDL or VHDL warning at HanoiTower.v(180): object "valid" assigned a value but never read File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 180
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(125): truncated value with size 32 to match size of target (2) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 125
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(139): truncated value with size 32 to match size of target (10) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 139
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(149): truncated value with size 32 to match size of target (10) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 149
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(192): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 192
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(193): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 193
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(196): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 196
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(197): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 197
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(200): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 200
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(201): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 201
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(204): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 204
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(205): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 205
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(211): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 211
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(212): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 212
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(215): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 215
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(216): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 216
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(219): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 219
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(220): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 220
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(223): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 223
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(224): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 224
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(230): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 230
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(231): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 231
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(234): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 234
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(235): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 235
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(238): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 238
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(239): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 239
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(242): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 242
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(243): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 243
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(254): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 254
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(255): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 255
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(258): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 258
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(259): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 259
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(262): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 262
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(263): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 263
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(266): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 266
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(267): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 267
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(273): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 273
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(274): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 274
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(277): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 277
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(278): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 278
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(281): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 281
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(282): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 282
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(285): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 285
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(286): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 286
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(292): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 292
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(293): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 293
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(296): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 296
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(297): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 297
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(300): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 300
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(301): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 301
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(304): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 304
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(305): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 305
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(316): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 316
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(317): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 317
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(320): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 320
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(321): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 321
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(324): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 324
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(325): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 325
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(328): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 328
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(329): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 329
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(335): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 335
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(336): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 336
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(339): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 339
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(340): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 340
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(343): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 343
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(344): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 344
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(347): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 347
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(348): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 348
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(354): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 354
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(355): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 355
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(358): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 358
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(359): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 359
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(362): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 362
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(363): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 363
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(366): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 366
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(367): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 367
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(377): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 377
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(378): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 378
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(381): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 381
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(382): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 382
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(385): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 385
+Warning (10230): Verilog HDL assignment warning at HanoiTower.v(386): truncated value with size 32 to match size of target (12) File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 386
+Info (12128): Elaborating entity "controller" for hierarchy "controller:myController" File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 112
+Info (13000): Registers with preset signals will power-up high File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 159
+Info (13003): DEV_CLRn pin will set, and not reset, register with preset signal due to NOT Gate Push-Back
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "VGA_SYNC_N" is stuck at GND File: C:/Users/liuj169/Downloads/ECE 287 Project Design/HanoiTower.v Line: 13
+Info (286030): Timing-Driven Synthesis is running
+Info (17049): 1 registers lost all their fanouts during netlist optimizations.
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Info (21057): Implemented 680 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 7 input pins
+    Info (21059): Implemented 29 output pins
+    Info (21061): Implemented 644 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 88 warnings
+    Info: Peak virtual memory: 4764 megabytes
+    Info: Processing ended: Thu Dec 14 14:44:43 2023
+    Info: Elapsed time: 00:00:12
+    Info: Total CPU time (on all processors): 00:00:23
+
+
